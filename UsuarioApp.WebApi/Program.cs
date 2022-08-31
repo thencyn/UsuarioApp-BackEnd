@@ -26,7 +26,7 @@ app.UseSwaggerUi3(); // serve Swagger UI
 app.UseReDoc(); // serve ReDoc UI
 
 // Configure the HTTP request pipeline.
-
+app.UseMiddleware<UsuarioApp.WebApi.Excepciones.ExcepcionMiddleware>();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

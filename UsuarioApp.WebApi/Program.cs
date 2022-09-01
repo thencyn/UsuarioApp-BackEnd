@@ -1,9 +1,16 @@
+using Serilog;
 using UsuarioApp.IRepositorio;
 using UsuarioApp.IServicios;
 using UsuarioApp.Repositorio;
 using UsuarioApp.Servicios;
 
 var builder = WebApplication.CreateBuilder(args);
+var logger = new LoggerConfiguration()
+  .ReadFrom.Configuration(builder.Configuration)
+  .Enrich.FromLogContext()
+  .CreateLogger();
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
 
 // Add services to the container.
 builder.Services.AddSqlServer<UsuarioApp.Modelo.UsuariosAppContext>(builder.Configuration.GetConnectionString("DefaultConnection"));

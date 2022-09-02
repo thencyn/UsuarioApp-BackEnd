@@ -10,6 +10,7 @@ namespace UsuarioApp.IRepositorio
     {
         IUsuarioRepositorio UsuarioRepositorio { get; }
         IRolRepositorio RolRepositorio { get; }
+        IPantallaRepositorio PantallaRepositorio { get; }
         Task<bool> Grabar();
         bool PoseeCambios();
     }

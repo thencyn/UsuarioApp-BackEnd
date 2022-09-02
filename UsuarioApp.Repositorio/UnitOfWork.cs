@@ -23,6 +23,7 @@ namespace UsuarioApp.Repositorio
         public IUsuarioRepositorio UsuarioRepositorio => new UsuarioRepositorio(this._context, this._mapper);
 
         public IRolRepositorio RolRepositorio => new RolRepositorio(this._context, this._mapper);
+        public IPantallaRepositorio PantallaRepositorio  => new PantallaRepositorio (this._context, this._mapper);
 
         public async Task<bool> Grabar()
         {

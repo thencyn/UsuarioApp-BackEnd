@@ -3,11 +3,13 @@ using UsuarioApp.Comun.Mensajes.Rol;
 using UsuarioApp.Comun.Mensajes;
 using UsuarioApp.IServicios;
 using UsuarioApp.Comun.Mensajes.Usuario;
+using Microsoft.AspNetCore.Authorization;
 
 namespace UsuarioApp.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class UsuarioController : Controller
     {
         private readonly IServicioUsuario servicioUsuario;

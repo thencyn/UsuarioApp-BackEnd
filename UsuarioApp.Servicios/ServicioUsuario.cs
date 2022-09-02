@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using UsuarioApp.Comun.DTO;
 using UsuarioApp.Comun.Mensajes;
 using UsuarioApp.Comun.Mensajes.Usuario;
 using UsuarioApp.Comun.Vistas;
@@ -41,6 +42,11 @@ namespace UsuarioApp.Servicios
                 Exitosa = true,
                 ListaUsuarios = listaUsuarios
             };
+        }
+    
+        public async Task<UsuarioDTO> Login(string usuario, string password)
+        {
+            return await this._unitOfWork.UsuarioRepositorio.Login(usuario, password);
         }
     }
 }

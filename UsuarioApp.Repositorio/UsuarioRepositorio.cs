@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using UsuarioApp.Comun.DTO;
 using UsuarioApp.Comun.Mensajes.Usuario;
 using UsuarioApp.Comun.Vistas;
 using UsuarioApp.IRepositorio;
@@ -60,6 +61,25 @@ namespace UsuarioApp.Repositorio
                                           .ProjectTo<UsuarioListado>(this._mapper.ConfigurationProvider)
                                           .ToListAsync();
             return listaUsuarios;
+        }
+
+        public async Task<UsuarioDTO> Login(string usuario, string password)
+        {
+            var usuarioDto = await _context.Usuario
+                .Where(x => x.Correo == usuario && x.RegistroVigente)
+                .ProjectTo<UsuarioDTO>(_mapper.ConfigurationProvider)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+            if (usuarioDto != null)
+            {
+                var hmac = new HMACSHA512(usuarioDto.PasswordSalt);
+                var passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+                if (!usuarioDto.PasswordHash.SequenceEqual(passwordHash))
+                {
+                    return null;
+                }                
+            }
+            return usuarioDto;
         }
     }
 }

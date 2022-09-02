@@ -17,6 +17,6 @@ namespace UsuarioApp.Comun.DTO
         public DateTime FechaCreacion { get; set; }
         public bool RegistroVigente { get; set; }
 
-        //public virtual Rol IdRolNavigation { get; set; }
+        public RolDTO IdRolNavigation { get; set; }
     }
 }

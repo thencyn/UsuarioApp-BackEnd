@@ -12,5 +12,8 @@ namespace UsuarioApp.IRepositorio
     {
         Task<IEnumerable<RolDTO>> ObtenerRolesTodos();
         Task Grabar(RolGrabarRequerimiento requerimiento);
+        Task CambiarEstado(RolCambiarEstadoRequerimiento requerimiento);
+        Task<bool> VerificarNombre(RolVerificarNombreRequerimiento requerimiento);
+        Task<RolDTO> ObtenerRolPorId(Comun.Mensajes.Shared.ObtenerPorIdRequerimiento requerimiento);
     }
 }

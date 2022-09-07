@@ -61,5 +61,30 @@ namespace UsuarioApp.Repositorio
                         
             return listaRoles;
         }
+    
+        public async Task CambiarEstado(RolCambiarEstadoRequerimiento requerimiento)
+        {
+            var rolBD = await this._context.Rol.FirstOrDefaultAsync(x => x.IdRol == requerimiento.IdRol);
+            if (rolBD != null)
+            {
+                rolBD.RegistroVigente = !rolBD.RegistroVigente;
+            }
+        }
+
+        public async Task<RolDTO> ObtenerRolPorId(Comun.Mensajes.Shared.ObtenerPorIdRequerimiento requerimiento)
+        {
+            return await _context.Rol
+                .ProjectTo<RolDTO>(_mapper.ConfigurationProvider)
+                .Where(x => x.IdRol == requerimiento.Id)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> VerificarNombre(RolVerificarNombreRequerimiento requerimiento)
+        {
+            return await this._context.Rol.AnyAsync(x => x.Nombre == requerimiento.Nombre && (!requerimiento.IdRol.HasValue || x.IdRol != requerimiento.IdRol));
+        }
+
+    
     }
 }

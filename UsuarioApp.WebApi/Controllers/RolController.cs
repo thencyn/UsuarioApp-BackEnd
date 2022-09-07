@@ -31,12 +31,19 @@ namespace UsuarioApp.WebApi.Controllers
         // [Authorize(Policy = "PolicyPuedeConsultar")]
         public async Task<ObtenerRolListadoRespuesta> ObtenerRolesTodos()
         {
-            var IdUsuario = User.Ext_ObtenerIdUsuario();
-            var Nombre = User.Ext_ObtenerNombre();
-            var Rol = User.Ext_ObtenerRol();
-            var Correo = User.Ext_ObtenerCorreo();
-            var IdRol = User.Ext_ObtenerIdRol();
             return await this._servicioRol.ObtenerRolesTodos();
+        }
+
+        [HttpPost("[action]")]
+        public async Task<BaseRespuesta> CambiarEstado([FromBody]RolCambiarEstadoRequerimiento requerimiento)
+        {
+            return await this._servicioRol.CambiarEstado(requerimiento);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ObtenerRolPorIdRespuesta> ObtenerRolPorId([FromQuery]Comun.Mensajes.Shared.ObtenerPorIdRequerimiento requerimiento)
+        {
+            return await this._servicioRol.ObtenerRolPorId(requerimiento);
         }
     }
 }

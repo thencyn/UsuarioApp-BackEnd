@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using UsuarioApp.Comun.DTO;
 using UsuarioApp.Comun.Mensajes;
 using UsuarioApp.Comun.Mensajes.Rol;
+using UsuarioApp.Comun.Mensajes.Shared;
 using UsuarioApp.IRepositorio;
 using UsuarioApp.IServicios;
 using UsuarioApp.Modelo;
@@ -25,11 +26,20 @@ namespace UsuarioApp.Servicios
 
         public async Task<BaseRespuesta> Grabar(RolGrabarRequerimiento requerimiento)
         {
-            await this._unitOfWork.RolRepositorio.Grabar(requerimiento);
-            await this._unitOfWork.Grabar();
-            return new BaseRespuesta()
+           var validacion = string.Empty;
+            if (await this._unitOfWork.RolRepositorio.VerificarNombre(new RolVerificarNombreRequerimiento() { IdRol = requerimiento.Rol.IdRol, Nombre = requerimiento.Rol.Nombre }))
             {
-                Exitosa = true
+                validacion = "El nombre del rol ya existe en el sistema.";
+            }
+            else
+            {
+                await this._unitOfWork.RolRepositorio.Grabar(requerimiento);
+                await this._unitOfWork.Grabar();
+            }
+            return new BaseRespuesta() 
+            { 
+                Exitosa = string.IsNullOrEmpty(validacion),
+                Mensaje = validacion
             };
         }
 
@@ -40,6 +50,26 @@ namespace UsuarioApp.Servicios
             {
                 Exitosa = true,
                 ListaRoles = listaRoles
+            };
+        }
+
+        public async Task<BaseRespuesta> CambiarEstado(RolCambiarEstadoRequerimiento requerimiento)
+        {
+            await this._unitOfWork.RolRepositorio.CambiarEstado(requerimiento);
+            await this._unitOfWork.Grabar();
+            return new BaseRespuesta()
+            {
+                Exitosa = true
+            };
+        }
+
+        public async Task<ObtenerRolPorIdRespuesta> ObtenerRolPorId(ObtenerPorIdRequerimiento requerimiento)
+        {
+            var rol = await this._unitOfWork.RolRepositorio.ObtenerRolPorId(requerimiento);
+            return new ObtenerRolPorIdRespuesta()
+            {
+                Exitosa = true,
+                Rol = rol
             };
         }
     }

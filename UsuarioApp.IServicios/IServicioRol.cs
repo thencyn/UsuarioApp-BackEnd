@@ -12,5 +12,7 @@ namespace UsuarioApp.IServicios
     {
         Task<BaseRespuesta> Grabar(RolGrabarRequerimiento requerimiento);
         Task<ObtenerRolListadoRespuesta> ObtenerRolesTodos();
+        Task<BaseRespuesta> CambiarEstado(RolCambiarEstadoRequerimiento requerimiento);
+        Task<ObtenerRolPorIdRespuesta> ObtenerRolPorId(Comun.Mensajes.Shared.ObtenerPorIdRequerimiento requerimiento);
     }
 }

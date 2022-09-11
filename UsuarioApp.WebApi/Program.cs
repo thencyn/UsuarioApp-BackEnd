@@ -27,6 +27,12 @@ builder.Services.AgregarJWT(builder.Configuration);
 builder.Services.AgregarSwagger();
 builder.Services.AddAutoMapper(typeof(UsuarioApp.Repositorio.AutoMapper.AutoMapperProfiles).Assembly);
 
+builder.Services.AddCors(o => o.AddPolicy("AddCors", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -37,6 +43,7 @@ if (app.Environment.IsDevelopment())
 }
 
 // Configure the HTTP request pipeline.
+app.UseCors("AddCors");
 app.UseMiddleware<UsuarioApp.WebApi.Excepciones.ExcepcionMiddleware>();
 app.UseHttpsRedirection();
 

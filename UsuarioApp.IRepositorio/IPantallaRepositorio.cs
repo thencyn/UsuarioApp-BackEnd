@@ -10,5 +10,6 @@ namespace UsuarioApp.IRepositorio
     public interface IPantallaRepositorio
     {
         Task<IEnumerable<PantallaDTO>> ObtenerPantallasPorIdRol(ObtenerPorIdRequerimiento requerimiento);
+        Task<IEnumerable<PantallaDTO>> ObtenerPantallasTodas();
     }
 }

@@ -15,5 +15,6 @@ namespace UsuarioApp.IRepositorio
         Task CambiarEstado(RolCambiarEstadoRequerimiento requerimiento);
         Task<bool> VerificarNombre(RolVerificarNombreRequerimiento requerimiento);
         Task<RolDTO> ObtenerRolPorId(Comun.Mensajes.Shared.ObtenerPorIdRequerimiento requerimiento);
+        Task RolPantallasGrabar(RolPantallasGrabarRequerimiento requerimiento);
     }
 }

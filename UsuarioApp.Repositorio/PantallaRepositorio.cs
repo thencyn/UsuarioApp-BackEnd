@@ -30,5 +30,13 @@ namespace UsuarioApp.Repositorio
                 .AsNoTracking()
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<PantallaDTO>> ObtenerPantallasTodas()
+        {
+            return await _context.Pantalla
+                .ProjectTo<PantallaDTO>(_mapper.ConfigurationProvider)
+                .AsNoTracking()
+                .ToListAsync();
+        }
     }
 }

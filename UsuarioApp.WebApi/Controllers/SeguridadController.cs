@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using UsuarioApp.IServicios;
+using UsuarioApp.WebApi.Extensiones;
 using UsuarioApp.WebApi.JWT;
 
 namespace UsuarioApp.WebApi.Controllers
@@ -49,6 +50,38 @@ namespace UsuarioApp.WebApi.Controllers
                 var listaPantallas = await this._servicioPantalla.ObtenerPantallasPorIdRol(new Comun.Mensajes.Shared.ObtenerPorIdRequerimiento() { Id = loginRespuesta.IdRol });
                 return Ok(new JWT.LoginRespuesta { Token = token, MenuUsuario = listaPantallas });
             }
+            return Unauthorized();
+        }
+    
+
+        [HttpGet("[action]")]
+        public async Task<bool> ValidarAccesoMenu(string urlMenu)
+        {
+            var idRol = int.Parse(User.Ext_ObtenerIdRol());
+            var listaPantallas = await this._servicioPantalla.ObtenerPantallasPorIdRol(new Comun.Mensajes.Shared.ObtenerPorIdRequerimiento() { Id = idRol });
+            return listaPantallas.Any(x => x.PathUrl == urlMenu);
+        }
+    
+        [HttpPost("[action]")]
+        public async Task<ActionResult<JWT.LoginRespuesta>> RenovarToken()
+        {
+            
+            var usuarioAcceso = new JWT.UsuarioAcceso()
+            {
+                IdUsuario = User.Ext_ObtenerIdUsuario().ToString(),
+                NombreUsuario = User.Ext_ObtenerCorreo(),
+                Nombre = User.Ext_ObtenerNombre(),
+                Rol = User.Ext_ObtenerRol(),
+                IdRol = User.Ext_ObtenerIdRol(),
+                Correo = User.Ext_ObtenerCorreo()
+            };
+            var token = this._jwtHelper.GenerarTokenJwt(usuarioAcceso);
+            if (!string.IsNullOrEmpty(token))
+            {
+                var listaPantallas = await this._servicioPantalla.ObtenerPantallasPorIdRol(new Comun.Mensajes.Shared.ObtenerPorIdRequerimiento() { Id = int.Parse(User.Ext_ObtenerIdRol()) });
+                return Ok(new JWT.LoginRespuesta { Token = token, MenuUsuario = listaPantallas });
+            }
+            
             return Unauthorized();
         }
     }

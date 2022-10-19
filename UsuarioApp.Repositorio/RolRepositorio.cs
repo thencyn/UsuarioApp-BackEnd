@@ -85,6 +85,31 @@ namespace UsuarioApp.Repositorio
             return await this._context.Rol.AnyAsync(x => x.Nombre == requerimiento.Nombre && (!requerimiento.IdRol.HasValue || x.IdRol != requerimiento.IdRol));
         }
 
+        public async Task RolPantallasGrabar(RolPantallasGrabarRequerimiento requerimiento)
+        {
+            var rolBD = await this._context.Rol.FirstOrDefaultAsync(x => x.IdRol == requerimiento.IdRol);
+            if (rolBD != null)
+            {
+                var listaPantallas = await this._context.RolPantalla.Where(x => x.IdRol == requerimiento.IdRol).ToListAsync();
+                var listaRemover = listaPantallas.Where(x => !requerimiento.ListaPantallas.Any(y => y == x.IdPantalla)).ToList();
+                if (listaRemover?.Count > 0)
+                {
+                    this._context.RolPantalla.RemoveRange(listaRemover);
+                }
+
+                var listaAgregar = requerimiento.ListaPantallas.Where(x => !listaPantallas.Any(y => y.IdPantalla == x)).ToList();
+                if (listaAgregar.Count > 0)
+                {
+                    await this._context.RolPantalla.AddRangeAsync(listaAgregar.ConvertAll(x => new RolPantalla() 
+                    {
+                        IdRol = requerimiento.IdRol,
+                        IdPantalla = x
+                    }));
+                }
+            }
+            
+        }
+
     
     }
 }

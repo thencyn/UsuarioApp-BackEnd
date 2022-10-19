@@ -72,5 +72,37 @@ namespace UsuarioApp.Servicios
                 Rol = rol
             };
         }
+ 
+        public async Task<RolVerificarNombreRespuesta> VerificarNombre(RolVerificarNombreRequerimiento requerimiento)
+        {
+            var verificacion = await this._unitOfWork.RolRepositorio.VerificarNombre(requerimiento);                
+            return new RolVerificarNombreRespuesta()
+            {
+                Exitosa = true,
+                ExisteNombre = verificacion
+            };
+        }
+
+        public async Task<ObtenerPantallasSeleccionadasPorIdRolRespuesta> ObtenerPantallasSeleccionadasPorIdRol(ObtenerPorIdRequerimiento requerimiento)
+        {
+            var listaPantallas = await this._unitOfWork.PantallaRepositorio.ObtenerPantallasTodas();
+            var listaPantallasPorRol = await this._unitOfWork.PantallaRepositorio.ObtenerPantallasPorIdRol(requerimiento);
+            return new ObtenerPantallasSeleccionadasPorIdRolRespuesta()
+            {
+                Exitosa = true,
+                ListaPantallas = listaPantallas,
+                ListaPantallasSeleccionadas = listaPantallasPorRol.Select(x => x.IdPantalla)
+            };
+        }
+
+        public async Task<BaseRespuesta> RolPantallasGrabar(RolPantallasGrabarRequerimiento requerimiento)
+        {
+            await this._unitOfWork.RolRepositorio.RolPantallasGrabar(requerimiento);
+            await this._unitOfWork.Grabar();
+            return new BaseRespuesta()
+            {
+                Exitosa = true
+            };
+        }
     }
 }

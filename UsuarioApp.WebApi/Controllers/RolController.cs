@@ -45,5 +45,23 @@ namespace UsuarioApp.WebApi.Controllers
         {
             return await this._servicioRol.ObtenerRolPorId(requerimiento);
         }
+
+        [HttpGet("[action]")]
+        public async Task<RolVerificarNombreRespuesta> VerificarNombre([FromQuery] RolVerificarNombreRequerimiento requerimiento)
+        {
+            return await this._servicioRol.VerificarNombre(requerimiento);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ObtenerPantallasSeleccionadasPorIdRolRespuesta> ObtenerPantallasSeleccionadasPorIdRol([FromQuery]Comun.Mensajes.Shared.ObtenerPorIdRequerimiento requerimiento)
+        {
+            return await this._servicioRol.ObtenerPantallasSeleccionadasPorIdRol(requerimiento);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<BaseRespuesta> RolPantallasGrabar([FromBody]RolPantallasGrabarRequerimiento requerimiento)
+        {
+            return await this._servicioRol.RolPantallasGrabar(requerimiento);
+        }
     }
 }
